@@ -87,7 +87,7 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
+vim.keymap.set("n", "<leader>E", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -104,6 +104,15 @@ vim.cmd([[
   nnoremap <silent> <leader>p :BufferLinePick<CR>
   nnoremap <silent> <leader>g :BufferLinePickClose<CR>
 ]])
+
+-- Set up nnoremap keybinding for toggling Nvim Tree
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>e",
+	[[:lua require('nvim-tree.api').tree.toggle()<CR>]],
+	{ noremap = true, silent = true }
+)
+
 -- Map <gb> to pick a buffer
 vim.api.nvim_set_keymap("n", "gb", ":BufferLinePick<CR>", { noremap = true, silent = true })
 -- Map <gD> to pick a buffer and close it
@@ -174,31 +183,31 @@ require("lazy").setup({
 	{ "numToStr/Comment.nvim", opts = {} },
 	{ "ThePrimeagen/vim-be-good", event = "VimEnter" },
 	-- using lazy.nvim
-{
-  "nvim-tree/nvim-tree.lua",
-  version = "*",
-  lazy = false,
-  dependencies = {
-    "nvim-tree/nvim-web-devicons",
-  },
-  config = function()
- require("nvim-tree").setup({
-  sort = {
-    sorter = "case_sensitive",
-  },
-  view = {
-    width = 30,
-  },
-  renderer = {
-    group_empty = true,
-  },
-  filters = {
-    dotfiles = true,
-  },
-})
-    end,
-},
-  { "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
+	{
+		"nvim-tree/nvim-tree.lua",
+		version = "*",
+		lazy = false,
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("nvim-tree").setup({
+				sort = {
+					sorter = "case_sensitive",
+				},
+				view = {
+					width = 30,
+				},
+				renderer = {
+					group_empty = true,
+				},
+				filters = {
+					dotfiles = true,
+				},
+			})
+		end,
+	},
+	{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
 	-- Here is a more advanced example where we pass configuration
 	-- options to `gitsigns.nvim`. This is equivalent to the following Lua:
 	--    require('gitsigns').setup({ ... })
