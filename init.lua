@@ -206,6 +206,7 @@ require("lazy").setup({
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
+		commit = "0539da005b98b02cf730c1d9da82b8e8edb1c2d2",
 		config = function() -- This is the function that runs, AFTER loading
 			require("which-key").setup()
 
