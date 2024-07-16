@@ -6,11 +6,13 @@ vim.g.maplocalleader = " "
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
-vim.cmd([[
-  nnoremap <silent> <leader>p :BufferLinePick<CR>
-  nnoremap <silent> <leader>g :BufferLinePickClose<CR>
-]])
+-- optionally enable 24-bit colour
+vim.opt.termguicolors = true
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -98,7 +100,10 @@ vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }
 vim.api.nvim_set_keymap("i", "jk", "<Esc>", { noremap = true, silent = true })
 
 -- Add these key mappings to your init.lua
-
+vim.cmd([[
+  nnoremap <silent> <leader>p :BufferLinePick<CR>
+  nnoremap <silent> <leader>g :BufferLinePickClose<CR>
+]])
 -- Map <gb> to pick a buffer
 vim.api.nvim_set_keymap("n", "gb", ":BufferLinePick<CR>", { noremap = true, silent = true })
 -- Map <gD> to pick a buffer and close it
@@ -169,7 +174,31 @@ require("lazy").setup({
 	{ "numToStr/Comment.nvim", opts = {} },
 	{ "ThePrimeagen/vim-be-good", event = "VimEnter" },
 	-- using lazy.nvim
-	{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
+{
+  "nvim-tree/nvim-tree.lua",
+  version = "*",
+  lazy = false,
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+  },
+  config = function()
+ require("nvim-tree").setup({
+  sort = {
+    sorter = "case_sensitive",
+  },
+  view = {
+    width = 30,
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
+})
+    end,
+},
+  { "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
 	-- Here is a more advanced example where we pass configuration
 	-- options to `gitsigns.nvim`. This is equivalent to the following Lua:
 	--    require('gitsigns').setup({ ... })
