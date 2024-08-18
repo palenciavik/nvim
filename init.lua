@@ -182,7 +182,7 @@ require("lazy").setup({
 	-- "gc" to comment visual regions/lines
 	{ "numToStr/Comment.nvim", opts = {} },
 	{ "ThePrimeagen/vim-be-good", event = "VimEnter" },
-	-- using lazy.nvim
+	{'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' }},
 	{
 		"nvim-tree/nvim-tree.lua",
 		version = "*",
@@ -578,6 +578,9 @@ require("lazy").setup({
 					-- Other options can be set here
 				},
 			})
+			require('lualine').setup {
+  				options = { theme  = 'gruvbox'},
+			}
 			-- Ensure the servers and tools above are installed
 			--  To check the current status of installed tools and/or manually install
 			--  other tools, you can run
