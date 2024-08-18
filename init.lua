@@ -1,3 +1,13 @@
+-- --  ██▒   █▓ ██▓ ▄████▄  ▄▄▄█████▓ ▒█████   ██▀███    ██████     ▄████▄  ▒█████   ███▄    █   █████▒██▓ ▄████ 
+-- ▓██░   █▒▓██▒▒██▀ ▀█  ▓  ██▒ ▓▒▒██▒  ██▒▓██ ▒ ██▒▒██    ▒    ▒██▀ ▀█ ▒██▒  ██▒ ██ ▀█   █ ▓██   ▒▓██▒██▒ ▀█▒
+--  ▓██  █▒░▒██▒▒▓█    ▄ ▒ ▓██░ ▒░▒██░  ██▒▓██ ░▄█ ▒░ ▓██▄      ▒▓█    ▄▒██░  ██▒▓██  ▀█ ██▒▒████ ░▒██▒██░▄▄▄░
+--   ▒██ █░░░██░▒▓▓▄ ▄██▒░ ▓██▓ ░ ▒██   ██░▒██▀▀█▄    ▒   ██▒   ▒▓▓▄ ▄██▒██   ██░▓██▒  ▐▌██▒░▓█▒  ░░██░▓█  ██▓
+--    ▒▀█░  ░██░▒ ▓███▀ ░  ▒██▒ ░ ░ ████▓▒░░██▓ ▒██▒▒██████▒▒   ▒ ▓███▀ ░ ████▓▒░▒██░   ▓██░░▒█░   ░██░▒▓███▀▒
+--    ░ ▐░  ░▓  ░ ░▒ ▒  ░  ▒ ░░   ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░▒ ▒▓▒ ▒ ░   ░ ░▒ ▒  ░ ▒░▒░▒░ ░ ▒░   ▒ ▒  ▒ ░   ░▓  ░▒   ▒ 
+--    ░ ░░   ▒ ░  ░  ▒       ░      ░ ▒ ▒░   ░▒ ░ ▒░░ ░▒  ░ ░     ░  ▒    ░ ▒ ▒░ ░ ░░   ░ ▒░ ░      ▒ ░ ░   ░ 
+--      ░░   ▒ ░░          ░      ░ ░ ░ ▒    ░░   ░ ░  ░  ░     ░       ░ ░ ░ ▒     ░   ░ ░  ░ ░    ▒ ░ ░   ░ 
+--       ░   ░  ░ ░                   ░ ░     ░           ░     ░ ░         ░ ░           ░         ░       ░ 
+     ░       ░                                               ░                                                
 --[[ -- Set <space> as the leader key
 -- See `:help mapleader` ]]
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -182,7 +192,61 @@ require("lazy").setup({
 	-- "gc" to comment visual regions/lines
 	{ "numToStr/Comment.nvim", opts = {} },
 	{ "ThePrimeagen/vim-be-good", event = "VimEnter" },
-	{'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' }},
+	{
+		"nvimdev/dashboard-nvim",
+		event = "VimEnter",
+		opts = function()
+			local logo = [[
+  ███▄    █ ▓█████  ▒█████   ██▒   █▓ ██▓ ███▄ ▄███▓ 
+  ██ ▀█   █ ▓█   ▀ ▒██▒  ██▒▓██░   █▒▓██▒▓██▒▀█▀ ██▒ 
+ ▓██  ▀█ ██▒▒███   ▒██░  ██▒ ▓██  █▒░▒██▒▓██    ▓██░ 
+ ▓██▒  ▐▌██▒▒▓█  ▄ ▒██   ██░  ▒██ █░░░██░▒██    ▒██  
+ ▒██░   ▓██░░▒████▒░ ████▓▒░   ▒▀█░  ░██░▒██▒   ░██▒ 
+ ░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒░▒░▒░    ░ ▐░  ░▓  ░ ▒░   ░  ░ 
+ ░ ░░   ░ ▒░ ░ ░  ░  ░ ▒ ▒░    ░ ░░   ▒ ░░  ░      ░ 
+    ░   ░ ░    ░   ░ ░ ░ ▒       ░░   ▒ ░░      ░    
+          ░    ░  ░    ░ ░        ░   ░         ░    
+                                 ░             ]]
+			logo = string.rep("\n", 8) .. logo .. "\n\n"
+			local opts = {
+				theme = "doom",
+				hide = {
+					statusline = false,
+				},
+				config = {
+					header = vim.split(logo, "\n"),
+        -- stylua: ignore
+        center = {
+          { action = "Telescope find_files",       desc = " Find File",       icon = " ", key = "f" },
+          { action = "ene | startinsert",          desc = " New File",        icon = " ", key = "n" },
+          { action = "Telescope oldfiles",         desc = " Recent Files",    icon = " ", key = "r" },
+          { action = "Telescope live_grep",        desc = " Find Text",       icon = " ", key = "g" },
+          { action = "e $MYVIMRC",                 desc = " Config",          icon = " ", key = "c" },
+          { action = "Lazy",                       desc = " Lazy",            icon = "󰒲 ", key = "l" },
+          { action = "qa",                         desc = " Quit",            icon = " ", key = "q" },
+        },
+					footer = function()
+						local stats = require("lazy").stats()
+						local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+						return {
+							"⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms",
+						}
+					end,
+				},
+			}
+			for _, button in ipairs(opts.config.center) do
+				button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
+				button.key_format = "  %s"
+			end
+			return opts
+		end,
+		dependencies = { { "nvim-tree/nvim-web-devicons" } },
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+	-- using lazy.nvim
 	{
 		"nvim-tree/nvim-tree.lua",
 		version = "*",
@@ -540,7 +604,7 @@ require("lazy").setup({
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
 				clangd = {},
-				-- gopls = {},
+				gopls = {},
 				-- pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -578,9 +642,9 @@ require("lazy").setup({
 					-- Other options can be set here
 				},
 			})
-			require('lualine').setup {
-  				options = { theme  = 'gruvbox'},
-			}
+			require("lualine").setup({
+				options = { theme = "gruvbox" },
+			})
 			-- Ensure the servers and tools above are installed
 			--  To check the current status of installed tools and/or manually install
 			--  other tools, you can run
